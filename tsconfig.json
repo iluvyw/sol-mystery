@@ -9,7 +9,8 @@
       "@utils/*": ["utils/*"],
       "@api/*": ["api/*"],
       "@libs/*": ["libs/*"],
-      "@styles/*": ["styles/*"]
+      "@styles/*": ["styles/*"],
+      "@pages/*": ["pages/*"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],

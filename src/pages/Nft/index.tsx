@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { nftsOfOwner } from 'libs/index'
 import { PublicKey } from '@solana/web3.js'
 import { FindNftsByOwnerOutput, Metadata } from '@metaplex-foundation/js'
-import NftCard from './NftCard'
+import NftCard from 'pages/Nft/NftCard'
 
 export default function Nft() {
   const [nfts, setNfts] = useState<FindNftsByOwnerOutput>([])

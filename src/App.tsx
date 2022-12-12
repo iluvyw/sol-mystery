@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import Home from 'pages/Home'
-import NFT from 'pages/NFT'
+import Nft from 'pages/Nft'
 
 import {
   ConnectionProvider,
@@ -28,7 +28,7 @@ function App() {
           </Routes>
         </WalletModalProvider>
         <Routes>
-          <Route path="/nft-collection" element={<NFT />}></Route>
+          <Route path="/nft-collection" element={<Nft />}></Route>
         </Routes>
       </WalletProvider>
     </ConnectionProvider>

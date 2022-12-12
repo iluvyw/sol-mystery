@@ -10,14 +10,15 @@ const Home = () => {
 
   const buttonContent = useMemo(() => {
     console.log('publickKey', publicKey)
-    if (publicKey) return ''
+    if (publicKey) return 'Continue'
     return 'Connect Wallet'
   }, [publicKey])
 
   const onConnectWallet = useCallback(() => {
+    if (!publicKey) return
     navigate('/nft-collection')
-  }, [navigate])
-  
+  }, [navigate, publicKey])
+
   return (
     <div className="w-full h-full flex flex-col items-center justify-center text-black font-outfit">
       <div className="h-[175px] text-8xl font-bold leading-[121px] mb-[15px]">

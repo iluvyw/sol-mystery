@@ -2,28 +2,49 @@ import AvatarHolder from 'assets/avatar_holder.jpeg'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { displayPublicKey } from 'utils/index'
 import { useCallback, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function UserDropdown() {
+  const navigate = useNavigate()
+
   const wallet = useWallet()
 
   const onDisconnectWallet = async () => {
     await wallet.disconnect()
   }
+
+  const moveToBoxCollection = () => {
+    navigate('/box')
+  }
+
+  const moveToNFTCollection = () => {
+    navigate('/nft')
+  }
   
   return (
-    <div
-      className="fixed top-[116px] right-44 flex flex-col items-center bg-gray-100 w-[200px] h-[150px] pt-12 border-1 border-black rounded-b-[20px] shadow-lg"
-    >
+    <div className="fixed top-[116px] right-44 flex flex-col items-center bg-gray-100 w-[200px] h-[220px] pt-9 border-1 border-black rounded-b-[20px] shadow-lg divide-y-[1px] divide-slate-300 divide-opacity-60">
       <a
         href={`https://explorer.solana.com/address/${wallet.publicKey?.toBase58()}?cluster=devnet`}
         target="_blank"
         rel="noreferrer"
-        className="w-full h-1/2 py-2 flex items-center justify-center hover:shadow-2xl hover:bg-slate-100"
+        className="w-full h-1/2 py-2 flex items-center justify-center hover:shadow-2xl hover:bg-slate-200"
       >
         View account in explorer
       </a>
       <button
-        className="w-full h-1/2 py-2 flex items-center justify-center hover:shadow-2xl hover:bg-slate-100 rounded-b-[20px]"
+        className="w-full h-1/2 py-2 flex items-center justify-center hover:shadow-2xl hover:bg-slate-200"
+        onClick={moveToBoxCollection}
+      >
+        Your boxes
+      </button>
+      <button
+        className="w-full h-1/2 py-2 flex items-center justify-center hover:shadow-2xl hover:bg-slate-200"
+        onClick={moveToNFTCollection}
+      >
+        Your NFTs
+      </button>
+      <button
+        className="w-full h-1/2 py-2 flex items-center justify-center hover:shadow-2xl hover:bg-red-200 rounded-b-[20px] text-red-600"
         onClick={onDisconnectWallet}
       >
         Disconnect

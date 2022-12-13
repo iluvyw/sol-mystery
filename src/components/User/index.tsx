@@ -20,9 +20,9 @@ function UserDropdown() {
   const moveToNFTCollection = () => {
     navigate('/nft')
   }
-  
+
   return (
-    <div className="fixed top-[116px] right-44 flex flex-col items-center bg-gray-100 w-[200px] h-[220px] pt-9 border-1 border-black rounded-b-[20px] shadow-lg divide-y-[1px] divide-slate-300 divide-opacity-60">
+    <div className="fixed top-[116px] right-44 flex flex-col items-center bg-gray-100 w-[200px] h-[220px] pt-9 border-1 border-black rounded-b-[20px] shadow-lg divide-y-[1px] divide-slate-300 divide-opacity-60 z-20">
       <a
         href={`https://explorer.solana.com/address/${wallet.publicKey?.toBase58()}?cluster=devnet`}
         target="_blank"
@@ -66,7 +66,7 @@ export default function User() {
   return (
     <>
       <button
-        className="fixed w-[200px] top-20 right-44 px-10 py-4 flex flex-row items-center z-20 bg-white rounded-full shadow-lg hover:shadow-2xl duration-300 cursor-pointer"
+        className="fixed w-[200px] top-20 right-44 px-10 py-4 flex flex-row items-center z-30 bg-white rounded-full shadow-lg hover:shadow-2xl duration-300 cursor-pointer"
         onClick={openUserDropdown}
       >
         <h1 className="mr-4">{displayPublicKey(publicKey)}</h1>

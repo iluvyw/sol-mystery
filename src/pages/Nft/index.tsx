@@ -4,10 +4,13 @@ import { FindNftsByOwnerOutput, Metadata } from '@metaplex-foundation/js'
 import NftCard from 'pages/Nft/NftCard'
 import User from 'components/User'
 import { useWallet } from '@solana/wallet-adapter-react'
+import Modal from './Modal'
 
 export default function Nft() {
   const [nfts, setNfts] = useState<FindNftsByOwnerOutput>([])
+  const [chosenNft, setChosenNft] = useState<string[]>([]) // List of mint addresses
   const [loading, setLoading] = useState<boolean>(false)
+  const [openModal, setOpenModal] = useState<boolean>(false)
   const { publicKey } = useWallet()
 
   useEffect(() => {
@@ -20,8 +23,23 @@ export default function Nft() {
     getNfts()
   }, [publicKey])
 
+  const chooseNft = (nft: string) => {
+    setChosenNft([...chosenNft, nft])
+  }
+
+  const removeNft = (nft: string) => {
+    setChosenNft(chosenNft.filter((item) => item !== nft))
+  }
+
+  const sellAvailable = () => {
+    return chosenNft.length > 0 && chosenNft.length % 3 === 0
+  }
+
   return (
     <div className="relative w-screen h-screen flex flex-col items-center px-44 font-outfit overflow-x-hidden overflow-y-scroll">
+      {openModal && (
+        <Modal closeModal={() => setOpenModal(false)} chosenNft={chosenNft} />
+      )}
       <User />
       <h1 className="font-bold text-4xl mt-36">Your NFTs</h1>
       {!loading ? (
@@ -29,7 +47,11 @@ export default function Nft() {
           <div className="w-full grid grid-cols-3 gap-6 my-10">
             {nfts.map((nft, index) => (
               <div key={index} className="w-full">
-                <NftCard metadata={nft} />
+                <NftCard
+                  metadata={nft}
+                  chooseNft={chooseNft}
+                  removeNft={removeNft}
+                />
               </div>
             ))}
           </div>
@@ -48,7 +70,13 @@ export default function Nft() {
           ))}
         </div>
       )}
-      <button className="fixed bottom-10 w-[200px] h-[60px] bg-white shadow-lg hover:shadow-2xl duration-300 px-10 rounded-2xl cursor-pointer font-semibold text-lg leading-[30px] z-10">
+      <button
+        onClick={() => setOpenModal(true)}
+        disabled={!sellAvailable()}
+        className={`fixed bottom-10 w-[200px] h-[60px] bg-white shadow-lg hover:shadow-2xl duration-300 px-10 rounded-2xl cursor-pointer font-semibold text-lg leading-[30px] z-10 ${
+          !sellAvailable() && 'grayscale opacity-50'
+        }`}
+      >
         List On Market
       </button>
     </div>

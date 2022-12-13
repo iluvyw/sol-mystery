@@ -3,13 +3,20 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 interface NftCardProps {
-  //   metadata: Metadata<JsonMetadata<string>> | Nft | Sft
   metadata: any
+  chooseNft: (nft: string) => void
+  removeNft: (nft: string) => void
 }
 
-export default function NftCard({ metadata }: NftCardProps) {
+export default function NftCard({
+  metadata,
+  chooseNft,
+  removeNft
+}: NftCardProps) {
   const [nft, setNft] = useState<any>(null)
   const [mintAddress, setMintAddress] = useState<string>('')
+  const [isChosen, setIsChosen] = useState<boolean>(false)
+
   useEffect(() => {
     async function getNft() {
       setMintAddress(metadata.mintAddress.toBase58())
@@ -22,8 +29,22 @@ export default function NftCard({ metadata }: NftCardProps) {
     getNft()
   }, [metadata])
 
+  const clickHandler = () => {
+    if (isChosen) {
+      removeNft(mintAddress)
+    } else {
+      chooseNft(mintAddress)
+    }
+    setIsChosen(!isChosen)
+  }
+
   return (
-    <div className="bg-white shadow-lg rounded-2xl h-[50vh] overflow-hidden flex flex-col hover:scale-105 duration-300 cursor-pointer">
+    <div
+      onClick={clickHandler}
+      className={`bg-white shadow-lg rounded-2xl h-[50vh] overflow-hidden flex flex-col hover:scale-105 duration-300 cursor-pointer ${
+        isChosen && 'grayscale'
+      }`}
+    >
       {nft ? (
         <img
           src={nft && nft.image}

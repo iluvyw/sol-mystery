@@ -1,6 +1,5 @@
-import React, { FC, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { nftsOfOwner } from 'libs/index'
-import { PublicKey } from '@solana/web3.js'
 import { FindNftsByOwnerOutput, Metadata } from '@metaplex-foundation/js'
 import NftCard from 'pages/Nft/NftCard'
 import User from 'components/User'

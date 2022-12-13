@@ -6,11 +6,27 @@ import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 
+import {
+  ConnectionProvider,
+  WalletProvider
+} from '@solana/wallet-adapter-react'
+import {
+  PhantomWalletAdapter,
+  Coin98WalletAdapter
+} from '@solana/wallet-adapter-wallets'
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <ConnectionProvider endpoint={'https://api.devnet.solana.com'}>
+        <WalletProvider
+          wallets={[new PhantomWalletAdapter(), new Coin98WalletAdapter()]}
+          autoConnect
+        >
+          <App />
+        </WalletProvider>
+      </ConnectionProvider>
     </BrowserRouter>
   </React.StrictMode>
 )

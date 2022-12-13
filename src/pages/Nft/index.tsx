@@ -21,10 +21,10 @@ export default function Nft() {
   }, [])
 
   return (
-    <div className="relative w-screen h-screen flex flex-col items-center justify-center px-44 font-outfit">
-      <h1 className="font-bold text-4xl mb-10">Your NFTs</h1>
+    <div className="relative w-screen h-screen flex flex-col items-center px-44 font-outfit overflow-x-hidden overflow-y-scroll">
+      <h1 className="font-bold text-4xl mt-28">Your NFTs</h1>
       {!loading ? (
-        <div className="w-full grid grid-cols-3 gap-6">
+        <div className="w-full grid grid-cols-3 gap-6 my-10">
           {nfts.map((nft, index) => (
             <div key={index} className="w-full">
               <NftCard metadata={nft} />
@@ -32,7 +32,7 @@ export default function Nft() {
           ))}
         </div>
       ) : (
-        <div className="w-full grid grid-cols-3 gap-6">
+        <div className="w-full grid grid-cols-3 gap-6 my-10">
           {[1, 2, 3].map((item) => (
             <div
               key={item}
@@ -41,7 +41,7 @@ export default function Nft() {
           ))}
         </div>
       )}
-      <button className="absolute bottom-10 h-[80px] bg-white shadow-lg px-10 rounded-2xl cursor-pointer font-semibold text-2xl leading-[30px] z-10">
+      <button className="fixed bottom-10 w-[200px] h-[60px] bg-white shadow-lg hover:shadow-2xl duration-300 px-10 rounded-2xl cursor-pointer font-semibold text-lg leading-[30px] z-10">
         List On Market
       </button>
     </div>

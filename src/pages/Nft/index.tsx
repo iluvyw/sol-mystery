@@ -21,7 +21,7 @@ export default function Nft() {
   }, [])
 
   return (
-    <div className="w-screen h-screen flex flex-col items-center justify-center px-44">
+    <div className="relative w-screen h-screen flex flex-col items-center justify-center px-44 font-outfit">
       <h1 className="font-bold text-4xl mb-10">Your NFTs</h1>
       {!loading ? (
         <div className="w-full grid grid-cols-3 gap-6">
@@ -41,6 +41,9 @@ export default function Nft() {
           ))}
         </div>
       )}
+      <button className="absolute bottom-10 h-[80px] bg-white shadow-lg px-10 rounded-2xl cursor-pointer font-semibold text-2xl leading-[30px] z-10">
+        List On Market
+      </button>
     </div>
   )
 }

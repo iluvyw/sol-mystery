@@ -28,7 +28,7 @@ function App() {
           </Routes>
         </WalletModalProvider>
         <Routes>
-          <Route path="/nft-collection" element={<Nft />}></Route>
+          <Route path="/nft" element={<Nft />}></Route>
         </Routes>
       </WalletProvider>
     </ConnectionProvider>

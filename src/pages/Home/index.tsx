@@ -20,7 +20,7 @@ const Home = () => {
   }, [navigate, publicKey])
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center text-black font-outfit">
+    <div className="relative w-full h-full flex flex-col items-center justify-center text-black font-outfit">
       <div className="h-[175px] text-8xl font-bold leading-[121px] mb-[15px]">
         Sol Mystery
       </div>
@@ -33,8 +33,8 @@ const Home = () => {
         children={buttonContent}
         onClick={onConnectWallet}
       />
-      <div className="h-[80px] mt-[205px] font-semibold text-2xl leading-[30px]">
-        Powered by TroubleMakers
+      <div className="absolute bottom-20 h-[80px] font-semibold text-2xl leading-[30px]">
+        Powered by Troublemakers
       </div>
     </div>
   )

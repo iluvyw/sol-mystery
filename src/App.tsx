@@ -31,6 +31,7 @@ function App() {
         }
       />
       <Route path="/nft" element={<Nft />}></Route>
+      <Route path="/box" element={<MysteryBox />}></Route>
     </Routes>
   )
 }

@@ -5,6 +5,7 @@ import NftCard from 'pages/Nft/NftCard'
 import User from 'components/User'
 import { useWallet } from '@solana/wallet-adapter-react'
 import Modal from './Modal'
+import { useNavigate } from 'react-router-dom'
 
 export default function Nft() {
   const [nfts, setNfts] = useState<FindNftsByOwnerOutput>([])
@@ -12,6 +13,8 @@ export default function Nft() {
   const [loading, setLoading] = useState<boolean>(false)
   const [openModal, setOpenModal] = useState<boolean>(false)
   const { publicKey } = useWallet()
+  const navigate = useNavigate()
+
 
   useEffect(() => {
     async function getNfts() {
@@ -34,6 +37,10 @@ export default function Nft() {
   const sellAvailable = () => {
     return chosenNft.length > 0 && chosenNft.length % 3 === 0
   }
+
+  useEffect(() => {
+    if (!publicKey) navigate('/')
+  }, [navigate, publicKey])
 
   return (
     <div className="relative w-screen h-screen flex flex-col items-center px-44 font-outfit overflow-x-hidden overflow-y-scroll">

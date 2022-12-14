@@ -1,14 +1,21 @@
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { useWallet } from '@solana/wallet-adapter-react'
-
+import { useNavigate } from 'react-router-dom'
 const Home = () => {
   const { publicKey } = useWallet()
+  const navigate = useNavigate()
 
   const buttonContent = useMemo(() => {
     if (publicKey) return ''
     return 'Connect Wallet'
   }, [publicKey])
+
+
+  useEffect(() => {
+    if (!publicKey) navigate('/')
+    else navigate('/nft')
+  }, [navigate, publicKey])
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center text-black font-outfit">

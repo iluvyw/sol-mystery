@@ -1,7 +1,4 @@
-import { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { useWallet } from '@solana/wallet-adapter-react'
-import { useNavigate } from 'react-router-dom'
 import './App.css'
 import Home from 'pages/Home'
 import Nft from 'pages/Nft'
@@ -12,14 +9,7 @@ import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 require('@solana/wallet-adapter-react-ui/styles.css')
 
 function App() {
-  const navigate = useNavigate()
 
-  const { publicKey } = useWallet()
-
-  useEffect(() => {
-    if (!publicKey) navigate('/')
-    else navigate('/nft')
-  }, [navigate, publicKey])
   
   return (
     <Routes>

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import './App.css'
 import Home from 'pages/Home'
 import Nft from 'pages/Nft'
+import MysteryBox from 'pages/MysteryBox'
 
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 

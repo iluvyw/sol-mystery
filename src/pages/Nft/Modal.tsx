@@ -21,53 +21,66 @@ export default function Modal({ closeModal, chosenNft }: ModalProps) {
   const [loading, setLoading] = useState<boolean>(false)
 
   const sendSPLTransaction = useCallback(
-    async (toPubkey: string, mintAddress: string) => {
-      if (!toPubkey || !mintAddress) return
+    async (toPubkeys: string, mintAddresses: string[]) => {
+      if (!toPubkeys || mintAddresses.length <= 0) return
 
       try {
         if (!publicKey || !signTransaction) throw new WalletNotConnectedError()
-        const toPublicKey = new PublicKey(toPubkey)
-        const mint = new PublicKey(mintAddress)
+        const fromTokenAccounts = []
+        const toTokenAccounts = []
 
-        const fromTokenAccount = await getOrCreateAssociatedTokenAccount(
-          connection,
-          publicKey,
-          mint,
-          publicKey,
-          signTransaction
-        )
+        for (let i = 0; i < mintAddresses.length; i++) {
+          console.log(mintAddresses[i], i)
+          const mintAddress = new PublicKey(mintAddresses[i])
+          const toPublicKey = new PublicKey(toPubkeys)
 
-        console.log('From', fromTokenAccount.address.toBase58())
-
-        const toTokenAccount = await getOrCreateAssociatedTokenAccount(
-          connection,
-          publicKey,
-          mint,
-          toPublicKey,
-          signTransaction
-        )
-
-        console.log('To', toTokenAccount.address.toBase58())
-
-        const transaction = new Transaction().add(
-          createTransferInstruction(
-            fromTokenAccount.address, // source
-            toTokenAccount.address, // dest
+          const fromTokenAccount = await getOrCreateAssociatedTokenAccount(
+            connection,
             publicKey,
-            1,
-            [],
-            TOKEN_PROGRAM_ID
+            mintAddress,
+            publicKey,
+            signTransaction
           )
-        )
+          fromTokenAccounts.push(fromTokenAccount)
+          console.log('From', fromTokenAccount.address.toBase58())
+
+          const toTokenAccount = await getOrCreateAssociatedTokenAccount(
+            connection,
+            publicKey,
+            mintAddress,
+            toPublicKey,
+            signTransaction
+          )
+          toTokenAccounts.push(toTokenAccount)
+          console.log('To', toTokenAccount.address.toBase58())
+        }
+
+        const transaction = new Transaction()
+
+        for (let i = 0; i < mintAddresses.length; i++) {
+          transaction.add(
+            createTransferInstruction(
+              fromTokenAccounts[i].address, // source
+              toTokenAccounts[i].address, // dest
+              publicKey,
+              1,
+              [],
+              TOKEN_PROGRAM_ID
+            )
+          )
+        }
 
         const blockHash = await connection.getRecentBlockhash()
         transaction.feePayer = await publicKey
-        transaction.recentBlockhash = await blockHash.blockhash
+        transaction.recentBlockhash = (
+          await connection.getLatestBlockhash()
+        ).blockhash
+        const latestBlockhash = await connection.getLatestBlockhash()
         const signed = await signTransaction(transaction)
 
         const tx = await connection.sendRawTransaction(signed.serialize())
         console.log('Tx', tx)
-        await connection.confirmTransaction(tx)
+        const confirmation = await connection.confirmTransaction(tx)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         console.log('Tx error', error)
@@ -79,12 +92,10 @@ export default function Modal({ closeModal, chosenNft }: ModalProps) {
   const clickHandler = async () => {
     console.log(boxName, price, chosenNft)
     setLoading(true)
-    for (let i = 0; i < chosenNft.length; i++) {
-      await sendSPLTransaction(
-        '86F7gaSSkZyxVCybvrM6aGghx7cQPTCkVTFrGvUWaPyA',
-        chosenNft[i]
-      )
-    }
+    await sendSPLTransaction(
+      'EKjF3qFZaCPMLizT8Zmjr43AWzdGp1gP4FrCG2MgG6J9',
+      chosenNft
+    )
     console.log('Done')
     setLoading(false)
     closeModal()

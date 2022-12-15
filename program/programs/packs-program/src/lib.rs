@@ -15,11 +15,24 @@ pub mod packs_program {
     ) -> Result<()> {
         let pack_pda = &mut ctx.accounts.pack_pda;
         let secret_key = env!("SECRET_KEY");
-        let magic_crypt = new_magic_crypt!(secret_key, 256);
+        let iv = env!("SECRET_IV");
+        let magic_crypt = new_magic_crypt!(secret_key, 256, iv);
 
-        pack_pda.mint0 = magic_crypt.encrypt_bytes_to_base64(mint0.as_ref());
-        pack_pda.mint1 = magic_crypt.encrypt_bytes_to_base64(mint1.as_ref());
-        pack_pda.mint2 = magic_crypt.encrypt_bytes_to_base64(mint2.as_ref());
+        pack_pda.mint0.copy_from_slice(
+            magic_crypt
+                .encrypt_bytes_to_base64(mint0.as_ref())
+                .as_bytes(),
+        );
+        pack_pda.mint1.copy_from_slice(
+            magic_crypt
+                .encrypt_bytes_to_base64(mint1.as_ref())
+                .as_bytes(),
+        );
+        pack_pda.mint2.copy_from_slice(
+            magic_crypt
+                .encrypt_bytes_to_base64(mint2.as_ref())
+                .as_bytes(),
+        );
         Ok(())
     }
 }
@@ -29,7 +42,7 @@ pub mod packs_program {
 pub struct CreatePack<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
-    #[account(init_if_needed, payer=payer, space=32+32+32+8, seeds=[mint0.as_ref(),mint1.as_ref(),mint2.as_ref()], bump)]
+    #[account(init_if_needed, payer=payer, space=64+64+64+8, seeds=[mint0.as_ref(),mint1.as_ref(),mint2.as_ref()], bump)]
     pub pack_pda: Account<'info, Pack>,
     pub system_program: Program<'info, System>,
 }
